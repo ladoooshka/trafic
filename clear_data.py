@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib as mtpl
 import seaborn as sb
 import math
+import numpy as np
 
 list_with_test_data = [["2021-09-01","ctldl.windowsupdate.com/msdownload/update/v3/static/trustedr/en/pinrulesstl.cab?b10ce11509a3e09c",429], 
 ["2021-09-01","x1.c.lencr.org/",441],
@@ -14,11 +15,17 @@ list_with_test_data = [["2021-09-01","ctldl.windowsupdate.com/msdownload/update/
 
 def create_table(n_list):
 	column = []
-	for row in range(len(n_list)-1):
+	len_row = len(n_list[0])-1
+	len_column = len(n_list)-1
+	for row in range(len_row):
 		every_column = []
-		for colmn in range(len(n_list[row])-1):
-			every_column.append(n_list[column][row])
+		for colmn in range(len_column):
+			every_column.append(n_list[colmn][row])
 		column.append(every_column)
 	return column
+
+table = create_table(list_with_test_data)
+pd_table = pd.DataFrame((table), column=['data', 'link', 'size'])
+
 
 
