@@ -26,25 +26,16 @@ table = create_table(list_with_test_data)
 
 def take_domen_name_second_level(table):
 	domen_name = []
-	links = []
-	for row in table:
-		links.append(row[1])
-	for row in links:
-		part_of_link = row.split('.')
-		len_part_of_link = len(part_of_link)
-		block_link = []
-		for num_blok in part_of_link:
-			num_blok.split('/')
-			block_link.append(num_blok)
-		name_domen = ''
-		for num_blok in range(len_part_of_link):	
-			if part_of_link[num_blok] == 'com' or part_of_link[num_blok] == 'ru':
-				name_domen = part_of_link[num_blok -1] +'.'+part_of_link[num_blok]
+	for row in table[1]:
+		string = row.replace('/', '.')
+		new_row = string.split('.')
+		for i in range(len(new_row)):
+			name_domen = ''
+			if new_row[i] == 'com' or new_row[i] == 'ru':
+				name_domen = new_row[i-1] + '.' + new_row[i]
 				break
-		domen_name.append(name_domen)
-	domen_clear = set(domen_name)
-	domen = list(domen_clear)
-	return domen
+			domen_name.append(name_domen)
+	return domen_name
 
 domen = take_domen_name_second_level(table)
 
