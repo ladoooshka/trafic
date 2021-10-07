@@ -13,8 +13,8 @@ list_with_test_data = [["2021-09-01","ctldl.windowsupdate.com/msdownload/update/
 
 def create_table(n_list):
 	column = []
-	len_row = len(n_list[0])-1
-	len_column = len(n_list)-1
+	len_row = len(n_list[0])
+	len_column = len(n_list)
 	for row in range(len_row):
 		every_column = []
 		for colmn in range(len_column):
@@ -31,11 +31,12 @@ def take_domen_name_second_level(table):
 		links.append(row[1])
 	for row in links:
 		part_of_link = row.split('.')
-		len_part_of_link = len(part_of_link) - 1
+		len_part_of_link = len(part_of_link)
 		block_link = []
 		for num_blok in part_of_link:
 			num_blok.split('/')
 			block_link.append(num_blok)
+		name_domen = ''
 		for num_blok in range(len_part_of_link):	
 			if part_of_link[num_blok] == 'com' or part_of_link[num_blok] == 'ru':
 				name_domen = part_of_link[num_blok -1] +'.'+part_of_link[num_blok]
@@ -65,11 +66,11 @@ count_of_trafic = count_of_trafic_for_domen(list_with_test_data, domen)
 
 def procent_trafic(data, list_for_count_trafic):
 	summ_trafic = 0
-	for i in range(len(data)-1):
+	for i in range(len(data)):
 		summ_trafic += data[i][2]
 	summ_trafic /= (1024*3)
 	procent = []
-	for i in range(len(list_for_count_trafic)-1):
+	for i in range(len(list_for_count_trafic)):
 		domen_procent = str((list_for_count_trafic[i][1] / round(summ_trafic, 0)) * 100) + ' %'
 		procent.append(domen_procent)
 	return procent
