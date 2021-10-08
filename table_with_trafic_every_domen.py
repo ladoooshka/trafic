@@ -1,6 +1,7 @@
 import pandas as pd
 import math
 import numpy as np
+import csv
 
 list_with_test_data = [["2021-09-01","ctldl.windowsupdate.com/msdownload/update/v3/static/trustedr/en/pinrulesstl.cab?b10ce11509a3e09c",429], 
 ["2021-09-01","x1.c.lencr.org/",441],
@@ -68,3 +69,30 @@ def procent_trafic(data, list_for_count_trafic):
 
 procent = procent_trafic(list_with_test_data, count_of_trafic)
 
+#all of this columns need union each other to row and then will make csv for dbeaver
+
+def make_table(count_of_trafic, procent, data):
+  table = []
+  len_table = len(data)
+  number = 1 
+  for i in range(len_table):
+    row = []
+    row.append(str(number) + '.')
+    row.append(count_of_trafic[i][0])
+    row.append(count_of_trafic[i][1])
+    row.append(procent[i])
+    row.append(data[i][0]) #here wrong calculation date 
+    number += 1
+    table.append(row)
+  return table
+
+table_for_csv = make_table(count_of_trafic, procent, data)
+
+witn open('Распределение_трафика_по_доменным_именам_второго_уровня.csv', mode = 'w', endcoding = 'utf-8') as w_file:
+  file_writer = csv.writer(w_file, delimer = ',', letrminator = '\r\n')
+  file_writer.writerow('№', 'Наименование домена второго уровня', 'Объем данных (трафика), Гбайт', 'Использование от общего объема данных на канале (по убыванию), %', 'Период измерения показателя: месяц/год')
+  for i in range(len(table_for_csv)):
+    file_writer.writerow(table_for_csv[i])
+
+file_writer.close()
+#here can doesnt work convertion file. Need testing 
