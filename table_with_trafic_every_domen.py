@@ -3,32 +3,22 @@ import math
 import numpy as np
 import csv
 
-list_with_test_data = [["2021-09-01","ctldl.windowsupdate.com/msdownload/update/v3/static/trustedr/en/pinrulesstl.cab?b10ce11509a3e09c",429], 
-["2021-09-01","x1.c.lencr.org/",441],
-["2021-09-01","crl.identrust.com/DSTROOTCAX3CRL.crl",446], 
-["2021-09-01","web.redhelper.ru/rc/status/661320?timeShift=-180&callback=jQuery112405109243876311269_1630069004680&_=1630069010923",1346],
-["2021-09-14","v10.events.data.microsoft.com",5349],
-["2021-09-14","config.edge.skype.com",8011],
-["2021-09-14","www.bing.com",9634],
-["2021-09-14","array509.prod.do.dsp.mp.microsoft.com",3699]]
+list_data = open('/home/v.maksimova/raw_2021-10-09','r',  encoding = 'utf-8').readlines()
 
-def create_table(n_list):
-  column = []
-  len_row = len(n_list[0])
-  len_column = len(n_list)
-  for row in range(len_row):
-    every_column = []
-    for colmn in range(len_column):
-      every_column.append(n_list[colmn][row])
-    column.append(every_column)
-  return column
+list_with_test_data = []
+for row in list_data:
+  m_row = row.split(',')
+  list_with_test_data.append(m_row)
+  print(m_row, row)
 
-table = create_table(list_with_test_data)
+print(*list_data, 'all data without changes')
+print(*list_with_test_data, 'clear data')
 
 def take_domen_name_second_level(table):
   domen_name = []
-  for row in table[1]:
-    string = row.replace('/', '.')
+  for row in table:
+    link = row[1] 
+    string = link.replace('/', '.')
     new_row = string.split('.')
     for i in range(len(new_row)):
       name_domen = ''
@@ -36,9 +26,12 @@ def take_domen_name_second_level(table):
         name_domen = new_row[i-1] + '.' + new_row[i]
         domen_name.append(name_domen)
         break
+  domen = set(domen_name)
+  domen_name = list(domen) 
   return domen_name
 
-domen = take_domen_name_second_level(table)
+#domen = take_domen_name_second_level(list_with_test_data)
+#print(domen)
 
 def count_of_trafic_for_domen(data, domen):
   list_for_count = []
@@ -47,52 +40,61 @@ def count_of_trafic_for_domen(data, domen):
     part_of_trafic = []
     for link in data:
       if name_domen in link[1]:
-        count_trafic += link[2]
+        count_trafic += link[-1]
     count_trafic /= (1024*3)
     part_of_trafic.append(name_domen)
     part_of_trafic.append(count_trafic)
     list_for_count.append(part_of_trafic)
   return list_for_count
 
-count_of_trafic = count_of_trafic_for_domen(list_with_test_data, domen)
+#count_of_trafic = count_of_trafic_for_domen(list_with_test_data, domen)
 
 def procent_trafic(data, list_for_count_trafic):
   summ_trafic = 0
   for i in range(len(data)):
-    summ_trafic += data[i][2]
-  summ_trafic /= (1024*3)
-  procent = []
+   # print(data[i][-1], end = '')
+    #summ_trafic += int(data[i][-1].strip())
+ # summ_trafic /= (1024*3)
+#  procent = []
   for i in range(len(list_for_count_trafic)):
-    domen_procent = str((list_for_count_trafic[i][1] / summ_trafic) * 100) + '%'
-    procent.append(domen_procent)
+   # domen_procent = str((list_for_count_trafic[i][1] / summ_trafic) * 100) + '%'
+    #procent.append(domen_procent)
   return procent
 
-procent = procent_trafic(list_with_test_data, count_of_trafic)
+#procent = procent_trafic(list_with_test_data, count_of_trafic)
 
-#all of this columns need union each other to row and then will make csv for dbeaver
+def date(data):
+  mounth = {'01': 'Январь',
+	 '02': 'Февраль',
+	 '03': 'Март',
+	 '04': 'Апрель',
+	 '05': 'Май',
+	 '06': 'Июнь',
+	 '07': 'Июль',
+	 '08': 'Август',
+	 '09': 'Сентябрь',
+	 '10': 'Октябрь',
+	 '11': 'Ноябрь',
+	 '12': 'Декабрь'}
+  key_mount = data[0][0].split('-')
+  mount_data = mounth.value(str(key_mount[1])) + ' ' + str(key_mount[0])
+  return mount_data
 
-def make_table(count_of_trafic, procent, data):
-  table = []
-  len_table = len(data)
-  number = 1 
-  for i in range(len_table):
-    row = []
-    row.append(str(number) + '.')
-    row.append(count_of_trafic[i][0])
-    row.append(count_of_trafic[i][1])
-    row.append(procent[i])
-    row.append(data[i][0]) #here wrong calculation date 
-    number += 1
-    table.append(row)
-  return table
+#mounth = date(list_with_test_data)
 
-table_for_csv = make_table(count_of_trafic, procent, data)
+def make_dict(count_of_trafic, procent, mounth):
+  len_table = len(count_of_trafic)
+  number = [num for num in range(1, len_table+1)] 
+  data_dict = {'Number': number,
+      'Domen_name': [name[0] for name in count_of_trafic],
+      'Trafic volume': [name[1] for name in count_of_trafic],
+      'Procent': [prot for prot in procent],
+      'Date': [mounth for i in range(len_table)]}  
+  return data_dict
 
-witn open('Распределение_трафика_по_доменным_именам_второго_уровня.csv', mode = 'w', endcoding = 'utf-8') as w_file:
-  file_writer = csv.writer(w_file, delimer = ',', letrminator = '\r\n')
-  file_writer.writerow('№', 'Наименование домена второго уровня', 'Объем данных (трафика), Гбайт', 'Использование от общего объема данных на канале (по убыванию), %', 'Период измерения показателя: месяц/год')
-  for i in range(len(table_for_csv)):
-    file_writer.writerow(table_for_csv[i])
+#table_for_csv = make_dict(count_of_trafic, procent, mounth)
 
-file_writer.close()
-#here can doesnt work convertion file. Need testing 
+#end_table = pd.DataFrame(table_for_csv,
+      columns = ['', '', '', '', ''])
+
+list_with_test_data.close()
