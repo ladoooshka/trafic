@@ -3,7 +3,7 @@ import math
 import numpy as np
 import csv
 
-list_data = open('/home/v.maksimova/raw_2021-10-09','r',  encoding = 'utf-8').readlines()
+list_data = open('raw_12-10-2021','r',  encoding = 'utf-8').readlines()
 
 list_with_test_data = []
 for row in list_data:
@@ -34,7 +34,7 @@ def count_of_trafic_for_domen(data, domen):
     part_of_trafic = []
     for link in data:
       if name_domen in link[1]:
-        count_trafic += int(link[-1])
+        count_trafic += int(link[2])
     count_trafic /= (1024*3)
     part_of_trafic.append(name_domen)
     part_of_trafic.append(count_trafic)
@@ -46,7 +46,7 @@ count_of_trafic = count_of_trafic_for_domen(list_with_test_data, domen)
 def procent_trafic(data, list_for_count_trafic):
   summ_trafic = 0
   for i in range(len(data)):
-    summ_trafic += int(data[i][-1])
+    summ_trafic += int(data[i][2])
   summ_trafic /= (1024*3)
   procent = []
   for i in range(len(list_for_count_trafic)):
@@ -93,4 +93,4 @@ table_for_csv = make_dict(domen, count_of_trafic, procent, mounth)
 end_table = pd.DataFrame(table_for_csv,
     columns = ['Number', 'Domen name', 'Trafic volume', 'Procent', 'Date'])
 
-end_table.to_csv('/home/v.maksimova/excel_file/pre_csv/table_2_domen_data.csv')
+#end_table.to_csv('/home/v.maksimova/excel_file/pre_csv/table_2_domen_data.csv')
