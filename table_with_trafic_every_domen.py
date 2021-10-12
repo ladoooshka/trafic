@@ -72,7 +72,7 @@ def date(data):
   date = data[0][0].replace('"', '')
   key_mount = date.split('-')
   if int(key_mount[1]) <= 9:
-     mount_data = mounth['0'+str(key_mount[1])] + ' ' + str(key_mount[0])
+     mount_data = mounth['0'+str(key_mount[1])] + '/' + str(key_mount[0])
   else:
     mount_data = mounth[str(key_mount[1])] + '/' + str(key_mount[0])
   return mount_data
@@ -93,4 +93,4 @@ table_for_csv = make_dict(domen, count_of_trafic, procent, mounth)
 end_table = pd.DataFrame(table_for_csv,
     columns = ['Number', 'Domen name', 'Trafic volume', 'Procent', 'Date'])
 
-print(end_table)
+end_table.to_csv('/home/v.maksimova/excel_file/pre_csv/table_2_domen_data.csv')
