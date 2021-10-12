@@ -6,7 +6,7 @@ file = open('http_12-10-2021', 'r', encoding = 'utf-8').readlines()
 
 table = []
 for row in file:
-    table.append(row.split(','))
+    table.append(row.rstrip().split('",'))
 
 def column_data(table):
     date = []
@@ -23,26 +23,30 @@ def column_data(table):
 
     for row in table:
         for i in range(len(row)):
-            column.setdefault([i]).append(row[i]) #need to know, why do not [] and value
+            column[i].append(row[i]) #need to know, why do not [] and value
 
     return column
-
+    
 column = column_data(table)
 
 date_dict_key = set(column[0])
 date_time_dict_key = set(column[3])
 port_dict_key = set(column[4])
 
-def date_dict(dict_key, table):
+def make_dict(dict_key, table, num):
     keys = list(dict_key)
+    date_dictionary = {}
     for i in range(len(keys)):
         row = []
         for part in table:
-            if int(keys[i]) == int(table[i][-1]):
-                row.append(table[i])
-        date_dictionary = {keys[i]: row}
-
-print(column[4])
+            if keys[i] == part[num]:
+                row.append(part)
+        date_dictionary.update([keys[i], row])
+    return date_dictionary
     
+date_dict = make_dict(date_dict_key, table, 0)
+date_time_dict = make_dict(date_time_dict_key, table, 3)
+port_dict = make_dict(port_dict_key, table, 4)
 
+print(port_dict)
 #def clear_link(data):
