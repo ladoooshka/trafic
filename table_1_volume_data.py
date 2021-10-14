@@ -1,6 +1,8 @@
-#import pandas as pd
+import pandas as pd
 import math
 import csv
+import seaborn as sbn
+
 
 file = open('http_12-10-2021', 'r', encoding = 'utf-8').readlines()
 
@@ -48,5 +50,7 @@ date_dict = make_dict(date_dict_key, table, 0)
 date_time_dict = make_dict(date_time_dict_key, table, 3)
 port_dict = make_dict(port_dict_key, table, 4)
 
-print(port_dict)
+def count_trafics(data):
+    
+
 #def clear_link(data):
