@@ -4,10 +4,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 #sns.set_theme(style="darkgrid")
 
-with open('raw_13-10-2021', 'r',  encoding = 'utf-8') as data:
+with open('raw_11-10-2021', 'r',  encoding = 'utf-8') as data:
     list_data = data.readlines()
-except FileNotFoundError:
-    list_data = '<<Not found>>'
+
 
 list_with_test_data = []
 
@@ -120,9 +119,9 @@ table_for_csv = make_dict(domen, count_of_trafic, procent, mounth)
 end_table = pd.DataFrame(table_for_csv,
     columns = ['Наименование домена второго уровня', 'Объем данных (трафика), Гбайт', 'Использование от общего объема данных на канале (по убыванию), %', 'Период измерения показателя: Месяц/год'])
 
-end_table['№'] = df['Объем данных (трафика), Гбайт'].rank(ascending = 1)     
+end_table['№'] = end_table['Объем данных (трафика), Гбайт'].rank(ascending = 1)     
 end_table = end_table.set_index('№')
-end_table = end_table.index_sort()
+end_table = end_table.sort_index(ascending=False)
                          
                          
 writer = pd.ExcelWriter('doc_for_send/table_with_data_volume.xlsx')

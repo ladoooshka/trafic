@@ -2,26 +2,28 @@ import email
 import smtplib
 import os
 from email import encoders
-from email.mine.multipart import MINEMultipart
+from email.mime.multipart import MIMEMultipart
 import mimetypes
 from email.mime.application import MIMEApplication
 from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
+from subprocess import Popen, PIPE
 
 def send_email():
-    sender = 'v.maksimova@ptl.ru'
-    password = 'NogtyNaNogah75'
+    sender = 'smtp.relay.ptl.ru'
     adress = 'tender@ptl.ru'
-    server = smtplib.SMTP(host='smtp.ptl.ru', port=587)
+    server = smtplib.SMTP('relay.ptl.ru:25')
     server.starttls()
     
     try:
-        server.login(sender, password)
+        from email.mime.text import MIMEText
         msg = MINEMultipart()
         msg['From'] = sender
         msg['To'] = adress
         msg['Subject'] = f'Визуализация данных по запросу {file_title}'
-        
+        p = Popen(["'''here had to be location sender, i think'''", "-t", "-oi"], stdin=PIPE, universal_newlines=True)
+        p.communicate(msg.as_string())
+
         for file in os.listdir('doc_for_send'):
             filename = os.path.basename(file)
             ftype, encoding = mimetypes.guess_type(file)
@@ -35,7 +37,7 @@ def send_email():
         server.sendmail(sender, adress, msg.asstring())
         
         for file in os.listdir('doc_for_send'):
-            path = os.path.join(os.path.abspath(os.path.dirname(__file__)), f{file})
+            path = os.path.join(os.path.abspath(os.path.dirname(__file__)), f'{file}')
             os.remove(path)
             
         return 'Message send'
@@ -45,7 +47,7 @@ def send_email():
             
 
 def main():
-    print(send_mail)
+    send_email()
 
 if __name__ == '__main__':
     main()

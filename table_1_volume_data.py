@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 
-file = open('http_13-10-2021', 'r', encoding = 'utf-8').readlines()
+file = open('http_14-10-2021', 'r', encoding = 'utf-8').readlines()
 
 table = []
 for row in file:
@@ -87,13 +87,13 @@ count = list(column[2])
 
 for_viz = count_trafic(count, time)
 viz = pd.DataFrame(for_viz,
-    columns = 'Время', 'Количество трафика')
+    columns = ['Время', 'Количество трафика'])
 
 viz.loc[number, datetime].plot()
 plt.title('Распределение трафика за указанный период')
 plt.ylabel('Количество трафика')
 plt.xlabel('Время')
-plt.savefig('doc_for_send/f'{file_title}'.png')
+plt.savefig('doc_for_send/data_14-10-2021.png')
 
 #def clear_link(data):
 
