@@ -17,7 +17,7 @@ def send_email():
     
     try:
         from email.mime.text import MIMEText
-        msg = MINEMultipart()
+        msg = MIMEMultipart()
         msg['From'] = sender
         msg['To'] = adress
         msg['Subject'] = f'Визуализация данных по запросу {file_title}'

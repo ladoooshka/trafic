@@ -20,14 +20,12 @@ def column_data(table):
     date_time = []
     port = []
 
-    column = { 0: date,
-        1: link,
-        2: trafic,
-        3: date_time, 
-        4: port}
+    column = [date, link, trafic, date_time, port]
 
     for row in table:
         for i in range(len(row)):
+            if i >= len(column):
+                break
             column[i].append(row[i]) #need to know, why do not [] and value
 
     return column
