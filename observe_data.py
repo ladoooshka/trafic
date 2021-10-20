@@ -14,15 +14,17 @@ while 'dead' not in start_file:
         need_file = list(set(list_file_title) - set(start_file))
 
         def gunzip(source_filepath, dest_filepath, block_size=65536):
-            with gzip.open(source_filepath, 'rb') as s_file, \
-                    open(dest_filepath, 'wb') as d_file:
-                while True:
-                    block = s_file.read(block_size)
-                    if not block:
-                        break
-                    else:
-                        d_file.write(block)
-                d_file.write(block)
+            s_file = gzip.open(source_filepath, 'rb', encoding = 'utf-8')
+	    d_file = open(dest_filepath, 'wb', encoding = 'utf-8')
+            while True:
+                block = s_file.read(block_size)
+                if not block:
+                    break
+                else:
+                    d_file.write(block)
+            d_file.write(block)
+	    s_file.close()
+	    d_file.close()
 
             return d_file
 

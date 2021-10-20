@@ -86,7 +86,7 @@ def make_dict(domen, count_of_trafic, procent, mounth):
 
     return data_dict
 
-def mk_table(domen, count_of_trafic, procent, mounth)
+def mk_table(domen, count_of_trafic, procent, mounth):
     table_for_csv = make_dict(domen, count_of_trafic, procent, mounth)
     end_table = pd.DataFrame(table_for_csv,
         columns = ['Наименование домена второго уровня', 'Объем данных (трафика), Гбайт', 'Использование от общего объема данных на канале (по убыванию), %', 'Период измерения показателя: Месяц/год'])
