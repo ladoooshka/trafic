@@ -11,25 +11,11 @@ while 'dead' not in start_file:
     list_file_title = os.listdir()
     
     if start_file != list_file_title:
+        
         need_file = list(set(list_file_title) - set(start_file))
 
-        def gunzip(source_filepath, dest_filepath, block_size=65536):
-            s_file = gzip.open(source_filepath, 'rb', encoding = 'utf-8')
-	    d_file = open(dest_filepath, 'wb', encoding = 'utf-8')
-            while True:
-                block = s_file.read(block_size)
-                if not block:
-                    break
-                else:
-                    d_file.write(block)
-            d_file.write(block)
-	    s_file.close()
-	    d_file.close()
-
-            return d_file
-
-        http_file = gunzip([name for name in need_file if 'http' in need_file], 'new_file', block_size=65536)
-        raw_file = gunzip([name for name in need_file if 'raw' in need_file], 'new_file', block_size=65536)
+        http_file = gzip.open([name for name in need_file if 'http' in need_file], 'r', encoding = 'utf-8')
+        raw_file = gzip.open([name for name in need_file if 'raw' in need_file], 'r', encoding = 'utf-8')
 
         start_file = list_file_title
 
@@ -49,16 +35,7 @@ while 'dead' not in start_file:
         today = datetime.datetime.now()
         sd.send_email(today)
 
+        http_file.close()
+        raw_file.close()
+
 os.removedirs('dead')
-
-
-
-
-
-
-
-
-
-
-
-
