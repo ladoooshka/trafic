@@ -1,15 +1,13 @@
-import email
+
 import smtplib
 import os
 from email import encoders
 from email.mime.multipart import MIMEMultipart
 import mimetypes
-from email.mime.application import MIMEApplication
 from email.mime.base import MIMEBase
-from email.mime.image import MIMEImage
 from subprocess import Popen, PIPE
 
-def send_email():
+def send_email(file_title):
     sender = 'smtp.relay.ptl.ru'
     adress = 'tender@ptl.ru'
     server = smtplib.SMTP('relay.ptl.ru:25')
@@ -21,7 +19,7 @@ def send_email():
         msg['From'] = sender
         msg['To'] = adress
         msg['Subject'] = f'Визуализация данных по запросу {file_title}'
-        p = Popen(["'''here had to be location sender, i think'''", "-t", "-oi"], stdin=PIPE, universal_newlines=True)
+        p = Popen(['tendrftp', '-t', '-oi'], stdin=PIPE, universal_newlines=True)
         p.communicate(msg.as_string())
 
         for file in os.listdir('doc_for_send'):

@@ -1,18 +1,4 @@
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-#sns.set_theme(style="darkgrid")
-
-with open('raw_11-10-2021', 'r',  encoding = 'utf-8') as data:
-    list_data = data.readlines()
-
-
-list_with_test_data = []
-
-for row in list_data:
-    m_row = row.rstrip().split(',')
-    list_with_test_data.append(m_row)
 
 
 def take_domen_name_second_level(table):
@@ -30,12 +16,7 @@ def take_domen_name_second_level(table):
                 break
   
     domen = set(domen_name) 
-  
-    return domen
-
-
-domen = list(take_domen_name_second_level(list_with_test_data))
-
+    return list(domen)
 
 def count_of_trafic_for_domen(data, domen):
 
@@ -56,9 +37,6 @@ def count_of_trafic_for_domen(data, domen):
     return list_for_count
 
 
-count_of_trafic = count_of_trafic_for_domen(list_with_test_data, domen)
-
-
 def procent_trafic(data, list_for_count_trafic):
   
     summ_trafic = 0 
@@ -71,9 +49,6 @@ def procent_trafic(data, list_for_count_trafic):
             procent.append(domen_procent)
 
     return procent
-
-
-procent = procent_trafic(list_with_test_data, count_of_trafic)
 
 
 def date(data):
@@ -101,9 +76,6 @@ def date(data):
     return mount_data
 
 
-mounth = date(list_with_test_data)
-
-
 def make_dict(domen, count_of_trafic, procent, mounth):
 
     len_table = len(count_of_trafic)
@@ -114,20 +86,20 @@ def make_dict(domen, count_of_trafic, procent, mounth):
 
     return data_dict
 
+def mk_table(domen, count_of_trafic, procent, mounth)
+    table_for_csv = make_dict(domen, count_of_trafic, procent, mounth)
+    end_table = pd.DataFrame(table_for_csv,
+        columns = ['Наименование домена второго уровня', 'Объем данных (трафика), Гбайт', 'Использование от общего объема данных на канале (по убыванию), %', 'Период измерения показателя: Месяц/год'])
 
-table_for_csv = make_dict(domen, count_of_trafic, procent, mounth)
-end_table = pd.DataFrame(table_for_csv,
-    columns = ['Наименование домена второго уровня', 'Объем данных (трафика), Гбайт', 'Использование от общего объема данных на канале (по убыванию), %', 'Период измерения показателя: Месяц/год'])
+    end_table['№'] = end_table['Объем данных (трафика), Гбайт'].rank(ascending = 1)     
+    end_table = end_table.set_index('№')
+    end_table = end_table.sort_index(ascending=False)
+                            
+                            
+    writer = pd.ExcelWriter('doc_for_send/table_with_data_volume.xlsx')
+    end_table.to_excel(writer)
+    writer.save()
 
-end_table['№'] = end_table['Объем данных (трафика), Гбайт'].rank(ascending = 1)     
-end_table = end_table.set_index('№')
-end_table = end_table.sort_index(ascending=False)
-                         
-                         
-writer = pd.ExcelWriter('doc_for_send/table_with_data_volume.xlsx')
-end_table.to_excel(writer)
-writer.save()
 
-data.close()
 
 #here need box with send this file to mail
