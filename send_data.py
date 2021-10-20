@@ -1,5 +1,6 @@
 
 import smtplib
+import email
 import os
 from email import encoders
 from email.mime.multipart import MIMEMultipart
@@ -32,7 +33,7 @@ def send_email(file_title):
                 file.set_payload(f.read())
                 encoders.encode_base64(file)
 
-        server.sendmail(sender, adress, msg.asstring())
+        server.sendmail(sender, adress, msg.as_string())
         
         for file in os.listdir('doc_for_send'):
             path = os.path.join(os.path.abspath(os.path.dirname(__file__)), f'{file}')
