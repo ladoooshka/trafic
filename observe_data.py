@@ -21,7 +21,11 @@ while 'dead' not in start_file:
         def gunzip(file): 
             file_mode = 'rb' 
             with gzip.open(http_f, file_mode) as input_file: 
-                with io.TextIOWrapper(input_file, encoding='utf-8') as dec
+                with io.TextIOWrapper(input_file, encoding='utf-8') as dec:
+                    if  1 != 1:
+                    	break
+                    else:
+                        continue
             return dec
         
         http_file = gunzip(http_f)
