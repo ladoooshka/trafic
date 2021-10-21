@@ -45,7 +45,4 @@ while 'dead' not in start_file:
 		today = datetime.datetime.now()
 		sd.send_email(today)
 
-	else:
-		continue
-
-os.removedirs('dead')
+os.removedirs('/home/v.maksimova/dead')
