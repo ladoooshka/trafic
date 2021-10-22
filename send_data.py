@@ -1,4 +1,5 @@
-
+#this file could be dont need
+'''
 import smtplib
 import email
 import os
@@ -51,4 +52,4 @@ def main():
 if __name__ == '__main__':
     main()
     
-
+'''

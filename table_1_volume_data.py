@@ -76,3 +76,4 @@ def mk_viz(column, count_trafic):
     plt.ylabel('Количество трафика')
     plt.xlabel('Время')
     plt.savefig('doc_for_send/data_14-10-2021.png')
+
